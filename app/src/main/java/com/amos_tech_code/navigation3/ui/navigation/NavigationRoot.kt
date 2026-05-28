@@ -14,6 +14,8 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
+import com.amos_tech_code.navigation3.ui.scenes.ListDetailScene
+import com.amos_tech_code.navigation3.ui.scenes.rememberListDetailSceneStrategy
 import com.amos_tech_code.navigation3.ui.screens.TodoDetailScreen
 import com.amos_tech_code.navigation3.ui.screens.TodoListScreen
 
@@ -46,10 +48,13 @@ fun NavigationRoot(
             onBack = {
                 navigator.goBack()
             },
+            sceneStrategy = rememberListDetailSceneStrategy(),
             entries = navigateState.toEntries (
                 entryProvider {
 
-                    entry<Route.TodoList> {
+                    entry<Route.TodoList>(
+                        metadata = ListDetailScene.listPane()
+                    ) {
                         TodoListScreen(
                             onTodoClick = {
                                 navigator.navigate(Route.TodoDetail(it))
@@ -57,13 +62,17 @@ fun NavigationRoot(
                         )
                     }
 
-                    entry<Route.TodoDetail> {
+                    entry<Route.TodoDetail>(
+                        metadata = ListDetailScene.detailPane()
+                    ) {
                         TodoDetailScreen(
                             todo = it.todo
                         )
                     }
 
-                    entry<Route.TodoFavorites> {
+                    entry<Route.TodoFavorites>(
+                        metadata = ListDetailScene.listPane()
+                    ) {
                         TodoListScreen(
                             onTodoClick = {
                                 navigator.navigate(Route.TodoDetail(it))
