@@ -16,6 +16,8 @@ import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import com.amos_tech_code.navigation3.ui.scenes.ListDetailScene
 import com.amos_tech_code.navigation3.ui.scenes.rememberListDetailSceneStrategy
+import com.amos_tech_code.navigation3.ui.screens.ChangeSettingScreen
+import com.amos_tech_code.navigation3.ui.screens.SettingsScreen
 import com.amos_tech_code.navigation3.ui.screens.TodoDetailScreen
 import com.amos_tech_code.navigation3.ui.screens.TodoListScreen
 
@@ -30,6 +32,8 @@ fun NavigationRoot(
     val navigator = remember {
         Navigator(navigateState)
     }
+    val resultStore = rememberResultStore()
+
     Scaffold(
         bottomBar = {
             TodoNavigationBar(
@@ -81,13 +85,21 @@ fun NavigationRoot(
                     }
 
                     entry<Route.Settings> {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxSize(),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text("Settings")
-                        }
+                        SettingsScreen(
+                            resultStore = resultStore,
+                            onChangeSettingClick = {
+                                navigator.navigate(Route.ChangeSettings)
+                            }
+                        )
+                    }
+
+                    entry<Route.ChangeSettings> {
+                        ChangeSettingScreen(
+                            resultStore = resultStore,
+                            onSave = {
+                                navigator.goBack()
+                            }
+                        )
                     }
 
                 }
